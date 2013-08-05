@@ -1,8 +1,8 @@
 <?php
 	/**
-	* Main file
+	* Main file for Chibi
 	*/
-	require('config.inc.php');
+	require('application/config.php');
 	
 	/** Composer autoloader DISABLED FOR NOW WHILE Toro gets a revamp **/
 	//require('vendor/autoload.php');
