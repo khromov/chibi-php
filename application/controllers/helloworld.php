@@ -14,6 +14,8 @@ class HelloWorld extends Controller
 	
     function get()
     {
+    	echo json_encode($this->app->config);
+		
     	//print_r(get_included_files());
     	$myCache = new Cache(array('adapter' => 'apc', 'backup' => 'file'));
 		

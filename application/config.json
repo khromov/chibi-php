@@ -1,0 +1,14 @@
+{
+	"db":
+	{
+		"connection_string": "mysql:host=localhost;dbname=competition;charset=utf8",
+		"username": "chibi-php",
+		"password": ""
+	},
+	
+	"site":
+	{
+		"secret_key": "secret",
+		"site_prefix": "\/chibi-php"
+	}
+}

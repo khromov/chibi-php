@@ -1,7 +1,10 @@
 <?php
 	/**
-	 * Load our required classes
+	 * Load our required conig classes
 	 */
+	 //TODO: Is .php file better after all? (Performance?)
+	 $config = json_decode(file_get_contents('application/config.json'), true);
+	//require('application/config.php');
 	 
 	 /** Controllers, libraries and models autoloader via spl_autoload_register **/
 	include('autoloader/autoload.php');
