@@ -5,10 +5,13 @@
 		"username": "chibi-php",
 		"password": ""
 	},
-	
+	"structure":
+	{
+		"application_namespace": "Application\\Competition"
+	},
 	"site":
 	{
 		"secret_key": "secret",
-		"site_prefix": "\/chibi-php"
+		"site_prefix": "/chibi-php/web"
 	}
 }

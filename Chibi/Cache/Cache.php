@@ -1,7 +1,10 @@
 <?php
+namespace Chibi\Cache;
+
 /**
  * Core cache class. Adapted from CodeIgniter.
 */
+
 
 include('core/cache/abstract/cache_driver.class.php');
 include('core/cache/abstract/cache_driver_library.class.php');

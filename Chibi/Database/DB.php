@@ -1,4 +1,8 @@
 <?php
+	namespace Chibi\Database;
+	
+	use PDO;
+	
 	/**
 	 * PDO Wrapper. Connects only when required.
 	 * 
