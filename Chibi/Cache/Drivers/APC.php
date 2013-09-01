@@ -1,9 +1,10 @@
 <?php
+namespace Chibi\Cache\Drivers;
 /**
  * Based on CodeIgniter APC Caching Class 
-*/
+ */
 
-class Cache_apc extends Cache_Driver
+class APC
 {
 	/**
 	 * Get 
@@ -11,8 +12,8 @@ class Cache_apc extends Cache_Driver
 	 * Look for a value in the cache.  If it exists, return the data 
 	 * if not, return FALSE
 	 *
-	 * @param 	string	
-	 * @return 	mixed		value that is stored/FALSE on failure
+	 * @param 	$id 	string		Key to look for in cache
+	 * @return 	mixed				value that is stored/FALSE on failure
 	 */
 	public function get($id)
 	{
@@ -21,14 +22,12 @@ class Cache_apc extends Cache_Driver
 		return (is_array($data)) ? $data[0] : FALSE;
 	}
 
-	// ------------------------------------------------------------------------	
-	
 	/**
 	 * Cache Save
 	 *
-	 * @param 	string		Unique Key
-	 * @param 	mixed		Data to store
-	 * @param 	int			Length of time (in seconds) to cache the data
+	 * @param	$id 		string		Unique Key
+	 * @param 	$data		mixed 		to store
+	 * @param 	$ttl 		int			Length of time (in seconds) to cache the data
 	 *
 	 * @return 	boolean		true on success/false on failure
 	 */
@@ -36,8 +35,6 @@ class Cache_apc extends Cache_Driver
 	{
 		return apc_store($id, array($data, time(), $ttl), $ttl);
 	}
-	
-	// ------------------------------------------------------------------------
 
 	/**
 	 * Delete from Cache
@@ -49,8 +46,6 @@ class Cache_apc extends Cache_Driver
 	{
 		return apc_delete($id);
 	}
-
-	// ------------------------------------------------------------------------
 
 	/**
 	 * Clean the cache
@@ -74,8 +69,6 @@ class Cache_apc extends Cache_Driver
 	 {
 		 return apc_cache_info($type);
 	 }
-
-	// ------------------------------------------------------------------------
 
 	/**
 	 * Get Cache Metadata
@@ -101,8 +94,6 @@ class Cache_apc extends Cache_Driver
 		);
 	}
 
-	// ------------------------------------------------------------------------
-
 	/**
 	 * is_supported()
 	 *
@@ -112,18 +103,11 @@ class Cache_apc extends Cache_Driver
 	{
 		if ( ! extension_loaded('apc') OR ini_get('apc.enabled') != "1")
 		{
-			log_message('error', 'The APC PHP extension must be loaded to use APC Cache.');
+			//TODO: Use PSR-4 error logger for stuff like this. Bundle it! :)
+			//log_message('error', 'The APC PHP extension must be loaded to use APC Cache.');
 			return FALSE;
 		}
 		
 		return TRUE;
 	}
-
-	// ------------------------------------------------------------------------
-
-	
 }
-// End Class
-
-/* End of file Cache_apc.php */
-/* Location: ./system/libraries/Cache/drivers/Cache_apc.php */

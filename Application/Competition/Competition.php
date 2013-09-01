@@ -1,13 +1,12 @@
 <?php
-	//use Chibi\Core\Abs\Application_Interface;
 	namespace Application\Competition;
 	
-	//SYND
+	//FIXME: Any way to do this nicer?
 	use Chibi\Core\Structure\ApplicationInterface 	as ApplicationInterface;
-	use Chibi\Database\DB 							as DB;
-	use Chibi\Router\Toro 							as Toro;
-	use Chibi\Router\ToroHook						as ToroHook;
-	use Chibi\Cache\Cache							as Cache;
+	use Chibi\Database\DB 							            as DB;
+	use Chibi\Router\Toro 							            as Toro;
+	use Chibi\Router\ToroHook						            as ToroHook;
+	use Chibi\Cache\CacheManager							    as CacheManager;
 	
 	class Competition implements ApplicationInterface
 	{
@@ -17,11 +16,14 @@
 		
 		public function __construct()
 		{
-			$config = json_decode(file_get_contents(dirname(__FILE__) . '/../config.json'), true);
-			
+			$config = json_decode(file_get_contents(dirname(__FILE__) . '/config.json'), true);
+
 			$this->config = $config;
 			$this->db = new DB($this->config['db']['connection_string'], $this->config['db']['username'], $this->config['db']['password']);
 			$this->router = new Toro();
+			
+			//Configure cache
+			$this->cache = new CacheManager();
 		}
 		
 		/** Main application loop **/

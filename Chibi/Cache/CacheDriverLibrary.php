@@ -1,4 +1,5 @@
 <?php
+namespace Chibi\Cache;
 /**
  * CodeIgniter Driver Library Class
  *
@@ -11,9 +12,8 @@
  * @author		EllisLab Dev Team
  * @link
  */
-class CI_Driver_Library
+class CacheDriverLibrary
 {
-
 	protected $valid_drivers = array();
 	protected $lib_name;
 
@@ -26,17 +26,8 @@ class CI_Driver_Library
 			$this->lib_name = get_class($this);
 		}
 
-		// The class will be prefixed with the parent lib
-		$child_class = $this->lib_name.'_'.$child;
-	
-		// Remove the CI_ prefix and lowercase
-		$lib_name = ucfirst(strtolower(str_replace('CI_', '', $this->lib_name)));
-		$driver_name = strtolower(str_replace('CI_', '', $child_class));
-		
-		$obj = new $child_class;
-		
-		//$obj->decorate($this);
-		
+		$obj = new Drivers\APC();
+
 		$this->$child = $obj;
 		
 		return $this->$child;
@@ -82,7 +73,4 @@ class CI_Driver_Library
 		//log_message('error', "Invalid driver requested: ".$child_class);
 		//show_error("Invalid driver requested: ".$child_class);
 	}
-
-	// --------------------------------------------------------------------
-
 }

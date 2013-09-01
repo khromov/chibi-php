@@ -12,6 +12,12 @@
 	"site":
 	{
 		"secret_key": "secret",
-		"site_prefix": "/chibi-php/web"
-	}
+		"site_prefix": "/sf_rheldev/chibi-php/web"
+	},
+	"cache":
+	{
+    "enabled": "true",
+    "adapter": "apc",
+    "fallback": "memory"
+   }
 }

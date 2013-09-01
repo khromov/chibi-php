@@ -80,10 +80,9 @@
 			}
 			else
 			{
+                //If suppress_errors is not enabled, we throw an error.
 				if(!$this->suppress_errors)
-					throw new Exception('Template file '. $prefix . $template_name .'.php does not exist.');	
-				
-				//If suppress_errors = true, don't do anything
+					throw new Exception('Template file '. $prefix . $template_name .'.php does not exist.');
 			}		
 
 			return ob_get_clean();			
