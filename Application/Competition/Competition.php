@@ -6,7 +6,7 @@
 	use Chibi\Database\DB 							            as DB;
 	use Chibi\Router\Toro 							            as Toro;
 	use Chibi\Router\ToroHook						            as ToroHook;
-	use Chibi\Cache\CacheManager							    as CacheManager;
+	//use Chibi\Cache\CacheManager							    as CacheManager;
 	
 	class Competition implements ApplicationInterface
 	{
@@ -23,7 +23,8 @@
 			$this->router = new Toro();
 			
 			//Configure cache
-			$this->cache = new CacheManager();
+			//TODO: Should this be done from config or like this? Check how Symfony2 does it.
+			$this->cache = new \Chibi\Cache\Drivers\Dummy();
 		}
 		
 		/** Main application loop **/

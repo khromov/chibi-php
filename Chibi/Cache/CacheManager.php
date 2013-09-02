@@ -2,10 +2,10 @@
 namespace Chibi\Cache;
 
 /**
- * Core cache class. Adapted from CodeIgniter.
+ * Cache manager. Extends
 */
 
-class CacheManager extends CacheDriverLibrary
+class CacheManager extends Drivers\AbstractDriver
 {
 	protected $cache_path = null;
 	protected $adapter	= 'dummy';
@@ -95,7 +95,7 @@ class CacheManager extends CacheDriverLibrary
 	 */
 	public function get_metadata($id)
 	{
-		return $this->{$this->adapter}->get_metadata($id);
+		return $this->{$this->adapter}->getMetadata($id);
 	}
 
 	/**

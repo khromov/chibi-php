@@ -1,129 +1,126 @@
 <?php
-/**
- * CodeIgniter
- *
- * An open source application development framework for PHP 4.3.2 or newer
- *
- * @package		CodeIgniter
- * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2006 - 2012 EllisLab, Inc.
- * @license		http://codeigniter.com/user_guide/license.html
- * @link		http://codeigniter.com
- * @since		Version 2.0
- * @filesource
- */
-
-// ------------------------------------------------------------------------
+namespace Chibi\Cache\Drivers;
 
 /**
- * CodeIgniter Dummy Caching Class
+ * Dummy caching class. Doesn't cache anything and always returns false to get requests.
  *
- * @package		CodeIgniter
- * @subpackage	Libraries
- * @category	Core
- * @author		ExpressionEngine Dev Team
- * @link
+ * Class APC
+ * @package Chibi\Cache\Drivers
  */
-
-class CI_Cache_dummy extends Cache_Driver {
-
+class Dummy extends AbstractDriverExtended
+{
 	/**
-	 * Get
+	 * Dummy function.
 	 *
-	 * Since this is the dummy class, it's always going to return FALSE.
-	 *
-	 * @param 	string
-	 * @return 	Boolean		FALSE
+	 * @param $key
+	 * @return bool
 	 */
-	public function get($id)
+	public function get($key)
 	{
-		return FALSE;
+		return false;
 	}
 
-	// ------------------------------------------------------------------------
-
 	/**
-	 * Cache Save
+	 * Dummy function.
 	 *
-	 * @param 	string		Unique Key
-	 * @param 	mixed		Data to store
-	 * @param 	int			Length of time (in seconds) to cache the data
-	 *
-	 * @return 	boolean		TRUE, Simulating success
+	 * @param $key
+	 * @param $value
+	 * @param int $ttl
+	 * @return bool
 	 */
-	public function save($id, $data, $ttl = 60)
+	public function set($key, $value, $ttl = 0)
 	{
-		return TRUE;
+		return true;
 	}
 
-	// ------------------------------------------------------------------------
-
 	/**
-	 * Delete from Cache
+	 * Dummy function.
 	 *
-	 * @param 	mixed		unique identifier of the item in the cache
-	 * @param 	boolean		TRUE, simulating success
+	 * @param $key
+	 * @param $value
+	 * @param int $ttl
+	 *
+	 * @return mixed
 	 */
-	public function delete($id)
+	public function setAndReturn($key, $value, $ttl = 0)
 	{
-		return TRUE;
+		return $key;
 	}
 
-	// ------------------------------------------------------------------------
-
 	/**
-	 * Clean the cache
+	 * Dummy function.
 	 *
-	 * @return 	boolean		TRUE, simulating success
+	 * @param $key
+	 * @param $value
+	 * @param $ttl
+	 * @return bool
 	 */
-	public function clean()
+	public function setIfNotExists($key, $value, $ttl)
 	{
-		return TRUE;
+		return true;
 	}
 
-	// ------------------------------------------------------------------------
-
 	/**
-	 * Cache Info
+	 * Dummy function.
 	 *
-	 * @param 	string		user/filehits
-	 * @return 	boolean		FALSE
+	 * @param $key
+	 * @return bool|\string[]
 	 */
-	 public function cache_info($type = NULL)
-	 {
-		 return FALSE;
-	 }
-
-	// ------------------------------------------------------------------------
+	public function delete($key)
+	{
+		return true;
+	}
 
 	/**
-	 * Get Cache Metadata
+	 * Dummy function.
+	 *
+	 * @return bool
+	 */
+	public function clear()
+	{
+		return true;
+	}
+
+	/**
+	 * Dummy function.
+	 *
+	 * @param $key
+	 * @return bool|\string[]
+	 */
+	public function exists($key)
+	{
+		return false;
+	}
+
+	/**
+	 * Dummy function.
+	 *
+	 * @param string $type
+	 * @return array|bool
+	 */
+	public function cacheInfo($type = 'user')
+	{
+		return false;
+	}
+
+	/**
+	 * Dummy function.
 	 *
 	 * @param 	mixed		key to get cache metadata on
-	 * @return 	boolean		FALSE
+	 * @return 	mixed		array on success/false on failure
 	 */
-	public function get_metadata($id)
+	public function getMetadata($key)
 	{
-		return FALSE;
+		return false;
 	}
-
-	// ------------------------------------------------------------------------
 
 	/**
-	 * Is this caching driver supported on the system?
-	 * Of course this one is.
+	 * Dummy function.
 	 *
-	 * @return TRUE;
+	 * @return boolean	always returns true
 	 */
-	public function is_supported()
+	public function isSupported()
 	{
-		return TRUE;
+		return true;
 	}
-
-	// ------------------------------------------------------------------------
-
 }
-// End Class
-
-/* End of file Cache_dummy.php */
-/* Location: ./system/libraries/Cache/drivers/Cache_dummy.php */

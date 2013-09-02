@@ -12,7 +12,7 @@
 	"site":
 	{
 		"secret_key": "secret",
-		"site_prefix": "/sf_rheldev/chibi-php/web"
+		"site_prefix": "/sf_rheldev/chibi-php-github/web"
 	},
 	"cache":
 	{

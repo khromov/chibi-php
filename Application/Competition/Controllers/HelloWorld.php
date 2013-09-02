@@ -1,8 +1,6 @@
 <?php
 namespace Application\Competition\Controllers;
 
-use Chibi\Cache\Cache as Cache;
-
 class HelloWorld
 {
 
@@ -20,12 +18,43 @@ class HelloWorld
 	{
 		global $app;
 
-		$rand = rand(0,100);
+		//$rand = rand(0,100);
 
-		echo "Last rand was: {$app->cache->get('test')}<br/>";
+		//echo "Last rand was: {$app->cache->get('test')}<br/>";
 
-		echo "Inserting: {$rand} <br/>";
-		$app->cache->save('test', $rand, 0);
+		//echo "Inserting: {$rand} <br/>";
+
+		$app->cache->set('test', 'kebab', 0);
+		$app->cache->set('test2', 'kebab2', 0);
+		$app->cache->set('test3', 'kebab3', 0);
+
+		/** Standard way to do cache
+		if(!$app->cache->exists('test12345'))
+		{
+			//Get from "db".
+			$slowdata = 'qwerty';
+
+			//Set data in cache
+			$app->cache->set('test12345', $slowdata, 5);
+
+			//Echo data
+			echo $slowdata . ' from db';
+		}
+		else
+			echo $app->cache->get('test12345');
+		*/
+		/** Faster way  **/
+		if(!$app->cache->exists('test12345'))
+		{
+			$slowdata = 'qwerty';
+			$app->cache->setIfNotExists('test12345', $slowdata, 0) . ' from db';
+			echo $slowdata;
+		}
+		else
+			echo $app->cache->get('test12345');
+
+		$key_info = $app->cache->getMetadata('test12345');
+		print_r($key_info);
 	}
 
 	/*

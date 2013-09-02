@@ -2,13 +2,15 @@
 namespace Chibi\Cache\Drivers;
 
 /**
- * Adds support for APC cache.
+ * In-memory cache. The lifespan of this cache is for the request only.
  *
  * Class APC
  * @package Chibi\Cache\Drivers
  */
-class APC extends AbstractDriverExtended
+class Memory extends AbstractDriverExtended
 {
+	private $cache = array();
+
 	/**
 	 * Gets a value from the cache by key.
 	 *
@@ -17,7 +19,10 @@ class APC extends AbstractDriverExtended
 	 */
 	public function get($key)
 	{
-		return apc_fetch($key);
+		if(array_key_exists($key, $this->cache))
+			return $this->cache[$key]['value'];
+		else
+			return false;
 	}
 
 	/**
@@ -30,11 +35,17 @@ class APC extends AbstractDriverExtended
 	 */
 	public function set($key, $value, $ttl = 0)
 	{
-		return apc_store($key, $value, $ttl);
+		$this->cache[$key] = array(
+			'value' => $value,
+			'ttl' => $ttl,
+			'creation_time' => time()
+		);
+
+		return true;
 	}
 
 	/**
-	 * Sets a key => value in APC and also returns the value so you can echo it easily.
+	 * Sets a key => value in and also returns the value so you can echo it easily.
 	 * By using this function you will not get the return value back from the cache adapter
 	 * as you would with set()
 	 *
@@ -54,11 +65,18 @@ class APC extends AbstractDriverExtended
 	 * @param $key
 	 * @param $value
 	 * @param $ttl
-	 * @return bool True if something was added to the cache, false otherwise
+	 * @return bool
 	 */
 	public function setIfNotExists($key, $value, $ttl)
 	{
-		return apc_add($key, $value, $ttl);
+		if(array_key_exists($key, $this->cache))
+			return false;
+		else
+		{
+			$this->set($key, $value, $ttl);
+			return true;
+		}
+
 	}
 
 	/**
@@ -69,7 +87,15 @@ class APC extends AbstractDriverExtended
 	 */
 	public function delete($key)
 	{
-		return apc_delete($key);
+		if(array_key_exists($key, $this->cache))
+		{
+			unset($this->cache[$key]);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	/**
@@ -104,7 +130,7 @@ class APC extends AbstractDriverExtended
 	 */
 	public function cacheInfo($type = 'user')
 	{
-	 return apc_cache_info($type);
+		return apc_cache_info($type);
 	}
 
 	/**
