@@ -19,6 +19,11 @@ class Memory extends AbstractDriverExtended
 	 */
 	public function get($key)
 	{
+		//FIXME: Maybe this is a better option
+		//http://stackoverflow.com/questions/3716649/how-to-auto-call-function-in-php-for-every-other-function-call
+		$this->expireKeyIfNeeded($key);
+
+		//Key exists in cache
 		if(array_key_exists($key, $this->cache))
 			return $this->cache[$key]['value'];
 		else
@@ -69,6 +74,8 @@ class Memory extends AbstractDriverExtended
 	 */
 	public function setIfNotExists($key, $value, $ttl)
 	{
+		$this->expireKeyIfNeeded($key);
+
 		if(array_key_exists($key, $this->cache))
 			return false;
 		else
@@ -93,9 +100,7 @@ class Memory extends AbstractDriverExtended
 			return true;
 		}
 		else
-		{
 			return false;
-		}
 	}
 
 	/**
@@ -106,7 +111,8 @@ class Memory extends AbstractDriverExtended
 	 */
 	public function clear()
 	{
-		return apc_clear_cache('user');
+		$this->cache = array();
+		return true;
 	}
 
 	/**
@@ -119,7 +125,9 @@ class Memory extends AbstractDriverExtended
 	 */
 	public function exists($key)
 	{
-		return apc_exists($key);
+		//Expires the key if needed, before checking whether it exists.
+		$this->expireKeyIfNeeded($key);
+		return array_key_exists($key, $this->cache);
 	}
 
 	/**
@@ -130,7 +138,7 @@ class Memory extends AbstractDriverExtended
 	 */
 	public function cacheInfo($type = 'user')
 	{
-		return apc_cache_info($type);
+		return false;
 	}
 
 	/**
@@ -141,27 +149,59 @@ class Memory extends AbstractDriverExtended
 	 */
 	public function getMetadata($key)
 	{
-		$info = apc_cache_info('user');
-
-		foreach($info['cache_list'] as $cache_item)
+		if(array_key_exists($key, $this->cache))
 		{
-			if($cache_item['info'] == $key)
-				return $cache_item;
+			return array(
+				'ttl' => $this->cache[$key]['ttl'],
+				'creation_time' => $this->cache[$key]['creation_time']
+			);
 		}
-
-		return false;
+		else
+			return false;
 	}
 
 	/**
-	 * is_supported()
+	 * In-memory cache is always supported.
 	 *
-	 * Check to see if APC is available on this system, bail if it isn't.
+	 * @return 	bool	returns true
 	 */
 	public function isSupported()
 	{
-		if (!extension_loaded('apc') OR ini_get('apc.enabled') != "1")
-			return false;
+		return true;
+	}
+
+	/** Private helpers */
+
+	/**
+	 * Expires a key if needed by unsetting it.
+	 *
+	 * @param $key
+	 * @return bool true if the key was expired, false if the key should not expire yet or if it does not exist.
+	 */
+	private function expireKeyIfNeeded($key)
+	{
+		//Key exists in cache
+		if(array_key_exists($key, $this->cache))
+		{
+			//If cache can expire at all. 0 = infinite cache
+			if($this->cache[$key]['ttl'] != 0)
+			{
+				//If the expiration time has expired
+				if(time() >= $this->cache[$key]['creation_time']+$this->cache[$key]['ttl'])
+				{
+					//Unset the key
+					unset($this->cache[$key]);
+
+					//Return false
+					return true;
+				}
+				else
+					return false;
+			}
+			else
+				return false;
+		}
 		else
-			return true;
+			return false;
 	}
 }
