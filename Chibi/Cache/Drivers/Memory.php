@@ -4,7 +4,7 @@ namespace Chibi\Cache\Drivers;
 /**
  * In-memory cache. The lifespan of this cache is for the request only.
  *
- * Class APC
+ * Class Memory
  * @package Chibi\Cache\Drivers
  */
 class Memory extends AbstractDriverExtended
